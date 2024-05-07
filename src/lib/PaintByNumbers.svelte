@@ -6,7 +6,6 @@
 	let canvas_src: HTMLCanvasElement; // Source (photo) canvas
 	let isDrawing = false;
 	let startX: number, startY: number;
-	let color = '#000000';
 	let canvasRect: DOMRect;
 
 	onMount(() => {
@@ -44,7 +43,6 @@
 		const x = event.clientX - canvasRect.left;
 		const y = event.clientY - canvasRect.top;
 
-		// ctx.strokeStyle = color;
 		ctx.lineJoin = 'round';
 		ctx.lineCap = 'round';
 		ctx.lineWidth = 5;
@@ -72,7 +70,7 @@
 <div>
 	<img
 		bind:this={baseImage}
-		width="500"
+		width="600"
 		class="preview"
 		src="ou-flag-flowers.jpg"
 		alt="OU Flag with Flowers"
