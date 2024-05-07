@@ -2,7 +2,7 @@
 
 A reproduction of Paul Haeberli's Paint by Numbers, a classic stylistic graphics approach.
 
-I also wrote a short review of the project and the reviewed work, [viewable here](MiniProject.pdf).
+I also wrote a short review of the project and the reviewed work, [viewable here](https://github.com/matthewCmatt/paint-by-numbers/blob/main/MiniProject.pdf).
 
 ```bibtex
 @inproceedings{haeberli1990paint,
