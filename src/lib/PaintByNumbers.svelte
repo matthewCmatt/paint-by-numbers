@@ -3,11 +3,13 @@
 	let isDrawing = false;
 	let startX: number, startY: number;
 	let color = '#000000';
+	let canvasRect: DOMRect;
 
 	function handleMouseDown(event: MouseEvent) {
 		isDrawing = true;
-		startX = event.clientX;
-		startY = event.clientY;
+		canvasRect = canvas.getBoundingClientRect();
+		startX = event.clientX - canvasRect.left;
+		startY = event.clientY - canvasRect.top;
 	}
 
 	function handleMouseMove(event: MouseEvent) {
@@ -16,8 +18,8 @@
 
 		if (!ctx) return;
 
-		const x = event.clientX - canvas.offsetLeft;
-		const y = event.clientY - canvas.offsetTop;
+		const x = event.clientX - canvasRect.left;
+		const y = event.clientY - canvasRect.top;
 
 		ctx.strokeStyle = color;
 		ctx.lineJoin = 'round';
