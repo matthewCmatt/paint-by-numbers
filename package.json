@@ -1,6 +1,6 @@
 {
-	"name": "paint-by-numbers",
-	"version": "0.0.1",
+	"name": "@matthewcmatt/paint-by-numbers",
+	"version": "1.0.0",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run package",

@@ -1,7 +1,5 @@
 <script lang="ts">
-	import { base } from '$app/paths';
 	import { onMount } from 'svelte';
-	import { sineIn } from 'svelte/easing';
 	import { gaussianRandom } from './gaussianRandom.js';
 
 	let baseImage: HTMLImageElement;
