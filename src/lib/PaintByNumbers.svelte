@@ -2,6 +2,11 @@
 	import { onMount } from 'svelte';
 	import { gaussianRandom } from './gaussianRandom.js';
 
+	export const imageURL: string = 'ou-flag-flowers.jpg';
+	export const strokeRadius: number = 5;
+	export const strokeLength: number = 10;
+	export const strokeAngle: number = 2.7; // Radius
+
 	let baseImage: HTMLImageElement;
 	let canvas_dst: HTMLCanvasElement; // Destination (painting) canvas
 	let canvas_src: HTMLCanvasElement; // Source (photo) canvas
@@ -50,13 +55,13 @@
 		isDrawing = false;
 	}
 
-	function setBrush(width = 5) {
+	function setBrush() {
 		const ctx = canvas_dst.getContext('2d');
 		if (!ctx) return;
 
 		ctx.lineJoin = 'round';
 		ctx.lineCap = 'round';
-		ctx.lineWidth = width;
+		ctx.lineWidth = strokeRadius;
 	}
 
 	// Queries the source canvas for the color at the given location (x,y)
@@ -76,7 +81,7 @@
 		if (!ctx) return;
 
 		setColor(xStart, yStart);
-		setBrush(4);
+		setBrush();
 		ctx.beginPath();
 		ctx.moveTo(xStart, yStart);
 		ctx.lineTo(xEnd, yEnd);
@@ -93,21 +98,16 @@
 		for (let i = 0; i < n; i++) {
 			const x = gaussianRandom(baseImage.width / 2, baseImage.width * 0.2); // Starting X
 			const y = gaussianRandom(baseImage.height / 2, baseImage.height * 0.2); // Starting Y
-			const a = gaussianRandom(Math.PI / 2, 0.2); // Angle (radians)
-			const len = gaussianRandom(2, 2);
-			drawStroke(x, y, x + len * Math.cos(a), y + len * Math.sin(a));
+			const a = gaussianRandom(strokeAngle, 0.2); // Angle (radians)
+			const length = gaussianRandom(strokeLength, 2);
+			drawStroke(x, y, x + length * Math.cos(a), y + length * Math.sin(a));
 		}
 	}
 </script>
 
 <div>
-	<img
-		bind:this={baseImage}
-		width="600"
-		class="preview"
-		src="ou-flag-flowers.jpg"
-		alt="OU Flag with Flowers"
-	/>
+	<!-- svelte-ignore a11y-missing-attribute -->
+	<img bind:this={baseImage} width="600" class="preview" src={imageURL} />
 	<canvas
 		bind:this={canvas_dst}
 		class="preview"

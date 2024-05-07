@@ -3,7 +3,7 @@
 </script>
 
 <div>
-	<PaintByNumbers />
+	<PaintByNumbers imageURL="ou-flag-flowers.jpg" />
 </div>
 
 <style>
