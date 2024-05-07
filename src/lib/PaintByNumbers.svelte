@@ -1,36 +1,50 @@
 <script lang="ts">
-	import { base } from '$app/paths';
 	import { onMount } from 'svelte';
 
-	let canvas: HTMLCanvasElement;
 	let baseImage: HTMLImageElement;
+	let canvas_dst: HTMLCanvasElement; // Destination (painting) canvas
+	let canvas_src: HTMLCanvasElement; // Source (photo) canvas
 	let isDrawing = false;
 	let startX: number, startY: number;
 	let color = '#000000';
 	let canvasRect: DOMRect;
 
 	onMount(() => {
-		canvas.width = baseImage.width;
-		canvas.height = baseImage.height;
+		canvas_src = document.createElement('canvas');
+		canvas_src.width = baseImage.width;
+		canvas_src.height = baseImage.height;
+		canvas_src.getContext('2d')?.drawImage(baseImage, 0, 0, baseImage.width, baseImage.height);
+
+		canvas_dst.width = baseImage.width;
+		canvas_dst.height = baseImage.height;
 	});
 
 	function handleMouseDown(event: MouseEvent) {
 		isDrawing = true;
-		canvasRect = canvas.getBoundingClientRect();
+		canvasRect = canvas_dst.getBoundingClientRect();
 		startX = event.clientX - canvasRect.left;
 		startY = event.clientY - canvasRect.top;
+
+		const pixelData = canvas_src.getContext('2d')?.getImageData(startX, startY, 1, 1).data;
+		if (!pixelData) return;
+		const color = `rgb(${pixelData[0]}, ${pixelData[1]}, ${pixelData[2]})`;
+
+		const ctx = canvas_dst.getContext('2d');
+		if (!ctx) return;
+
+		ctx.strokeStyle = color;
 	}
 
 	function handleMouseMove(event: MouseEvent) {
 		if (!isDrawing) return;
-		const ctx = canvas.getContext('2d');
 
+		const ctx = canvas_dst.getContext('2d');
 		if (!ctx) return;
 
 		const x = event.clientX - canvasRect.left;
 		const y = event.clientY - canvasRect.top;
 
-		ctx.strokeStyle = color;
+		// ctx.strokeStyle = color;
 		ctx.lineJoin = 'round';
 		ctx.lineCap = 'round';
 		ctx.lineWidth = 5;
@@ -49,9 +63,9 @@
 	}
 
 	function clearCanvas() {
-		const ctx = canvas.getContext('2d');
+		const ctx = canvas_dst.getContext('2d');
 		if (!ctx) return;
-		ctx.clearRect(0, 0, canvas.width, canvas.height);
+		ctx.clearRect(0, 0, canvas_dst.width, canvas_dst.height);
 	}
 </script>
 
@@ -64,7 +78,7 @@
 		alt="OU Flag with Flowers"
 	/>
 	<canvas
-		bind:this={canvas}
+		bind:this={canvas_dst}
 		class="preview"
 		on:mousedown={handleMouseDown}
 		on:mousemove={handleMouseMove}
@@ -72,7 +86,6 @@
 	/>
 </div>
 <div>
-	<input type="color" bind:value={color} />
 	<button on:click={clearCanvas}>Clear</button>
 </div>
 
