@@ -1,17 +1,17 @@
 <script lang="ts">
+	import { base } from '$app/paths';
 	import { onMount } from 'svelte';
 
 	let canvas: HTMLCanvasElement;
+	let baseImage: HTMLImageElement;
 	let isDrawing = false;
 	let startX: number, startY: number;
 	let color = '#000000';
 	let canvasRect: DOMRect;
 
-	let brushTexture: HTMLImageElement;
-
 	onMount(() => {
-		brushTexture = new Image();
-		brushTexture.src = 'brush-1.png';
+		canvas.width = baseImage.width;
+		canvas.height = baseImage.height;
 	});
 
 	function handleMouseDown(event: MouseEvent) {
@@ -55,21 +55,29 @@
 	}
 </script>
 
-<canvas
-	bind:this={canvas}
-	width="600"
-	height="400"
-	on:mousedown={handleMouseDown}
-	on:mousemove={handleMouseMove}
-	on:mouseup={handleMouseUp}
-/>
+<div>
+	<img
+		bind:this={baseImage}
+		width="500"
+		class="preview"
+		src="ou-flag-flowers.jpg"
+		alt="OU Flag with Flowers"
+	/>
+	<canvas
+		bind:this={canvas}
+		class="preview"
+		on:mousedown={handleMouseDown}
+		on:mousemove={handleMouseMove}
+		on:mouseup={handleMouseUp}
+	/>
+</div>
 <div>
 	<input type="color" bind:value={color} />
 	<button on:click={clearCanvas}>Clear</button>
 </div>
 
 <style>
-	canvas {
-		border: 1px solid #000;
+	.preview {
+		border: 2px solid #000;
 	}
 </style>
