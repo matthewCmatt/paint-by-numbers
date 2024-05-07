@@ -1,5 +1,7 @@
 <script lang="ts">
+	import { base } from '$app/paths';
 	import { onMount } from 'svelte';
+	import { sineIn } from 'svelte/easing';
 
 	let baseImage: HTMLImageElement;
 	let canvas_dst: HTMLCanvasElement; // Destination (painting) canvas
@@ -24,14 +26,7 @@
 		startX = event.clientX - canvasRect.left;
 		startY = event.clientY - canvasRect.top;
 
-		const pixelData = canvas_src.getContext('2d')?.getImageData(startX, startY, 1, 1).data;
-		if (!pixelData) return;
-		const color = `rgb(${pixelData[0]}, ${pixelData[1]}, ${pixelData[2]})`;
-
-		const ctx = canvas_dst.getContext('2d');
-		if (!ctx) return;
-
-		ctx.strokeStyle = color;
+		setColor(startX, startY);
 	}
 
 	function handleMouseMove(event: MouseEvent) {
@@ -42,10 +37,6 @@
 
 		const x = event.clientX - canvasRect.left;
 		const y = event.clientY - canvasRect.top;
-
-		ctx.lineJoin = 'round';
-		ctx.lineCap = 'round';
-		ctx.lineWidth = 5;
 
 		ctx.beginPath();
 		ctx.moveTo(startX, startY);
@@ -60,10 +51,47 @@
 		isDrawing = false;
 	}
 
+	// Queries the source canvas for the color at the given location (x,y)
+	function setColor(x: number, y: number) {
+		const pixelData = canvas_src.getContext('2d')?.getImageData(x, y, 1, 1).data;
+		if (!pixelData) return;
+
+		const color = `rgb(${pixelData[0]}, ${pixelData[1]}, ${pixelData[2]})`;
+
+		const ctx = canvas_dst.getContext('2d');
+		if (!ctx) return;
+
+		ctx.strokeStyle = color;
+		ctx.lineJoin = 'round';
+		ctx.lineCap = 'round';
+		ctx.lineWidth = 5;
+	}
+
+	function drawStroke(xStart: number, yStart: number, xEnd: number, yEnd: number) {
+		const ctx = canvas_dst.getContext('2d');
+		if (!ctx) return;
+
+		setColor(xStart, yStart);
+		ctx.beginPath();
+		ctx.moveTo(xStart, yStart);
+		ctx.lineTo(xEnd, yEnd);
+		ctx.stroke();
+	}
+
 	function clearCanvas() {
 		const ctx = canvas_dst.getContext('2d');
 		if (!ctx) return;
 		ctx.clearRect(0, 0, canvas_dst.width, canvas_dst.height);
+	}
+
+	function autostroke() {
+		for (let i = 0; i < 50; i++) {
+			const x = Math.random() * baseImage.width; // Starting X
+			const y = Math.random() * baseImage.height; // Starting Y
+			const a = Math.random() * Math.PI * 2; // Angle (radians)
+			const len = 10;
+			drawStroke(x, y, x + len * Math.cos(a), y + len * Math.sin(a));
+		}
 	}
 </script>
 
@@ -85,6 +113,7 @@
 </div>
 <div>
 	<button on:click={clearCanvas}>Clear</button>
+	<button on:click={autostroke}>Autostroke (x50)</button>
 </div>
 
 <style>
