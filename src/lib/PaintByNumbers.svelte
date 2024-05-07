@@ -1,9 +1,18 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
+
 	let canvas: HTMLCanvasElement;
 	let isDrawing = false;
 	let startX: number, startY: number;
 	let color = '#000000';
 	let canvasRect: DOMRect;
+
+	let brushTexture: HTMLImageElement;
+
+	onMount(() => {
+		brushTexture = new Image();
+		brushTexture.src = 'brush-1.png';
+	});
 
 	function handleMouseDown(event: MouseEvent) {
 		isDrawing = true;
