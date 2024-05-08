@@ -2,10 +2,10 @@
 	import { onMount } from 'svelte';
 	import { gaussianRandom } from './gaussianRandom.js';
 
-	export const imageURL: string = 'ou-flag-flowers.jpg';
-	export const strokeRadius: number = 5;
-	export const strokeLength: number = 10;
-	export const strokeAngle: number = 2.7; // Radius
+	export let imageURL: string;
+	export let strokeRadius: number = 5;
+	export let strokeLength: number = 10;
+	export let strokeAngle: number = 2.7; // Radius
 
 	let baseImage: HTMLImageElement;
 	let canvas_dst: HTMLCanvasElement; // Destination (painting) canvas
@@ -31,6 +31,7 @@
 		startY = event.clientY - canvasRect.top;
 
 		setColor(startX, startY);
+		setBrush();
 	}
 
 	function handleMouseMove(event: MouseEvent) {

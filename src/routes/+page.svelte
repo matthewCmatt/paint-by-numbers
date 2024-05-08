@@ -3,7 +3,7 @@
 </script>
 
 <div>
-	<PaintByNumbers imageURL="ou-flag-flowers.jpg" />
+	<PaintByNumbers imageURL={'ou-flag-flowers.jpg'} />
 </div>
 
 <style>
