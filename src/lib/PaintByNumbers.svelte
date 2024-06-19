@@ -15,8 +15,16 @@
 	let canvasRect: DOMRect;
 
 	onMount(() => {
-		console.debug('Paint By Numbers mounted');
+		if (baseImage.complete) {
+			setupCanvas();
+		} else {
+			baseImage.onload = () => {
+				setupCanvas();
+			};
+		}
+	});
 
+	function setupCanvas() {
 		canvas_dst.width = baseImage.width;
 		canvas_dst.height = baseImage.height;
 
@@ -24,7 +32,7 @@
 		canvas_src.width = baseImage.width;
 		canvas_src.height = baseImage.height;
 		canvas_src.getContext('2d')?.drawImage(baseImage, 0, 0, baseImage.width, baseImage.height);
-	});
+	}
 
 	function handleMouseDown(event: MouseEvent) {
 		isDrawing = true;
@@ -110,7 +118,7 @@
 
 <div class="root">
 	<!-- svelte-ignore a11y-missing-attribute -->
-	<img src={imageURL} class="preview" width="600" loading="eager" bind:this={baseImage} />
+	<img src={imageURL} class="preview" width="600" bind:this={baseImage} />
 	<canvas
 		class="preview"
 		width="600"
