@@ -1,7 +1,7 @@
 {
 	"name": "@matthewcmatt/paint-by-numbers",
 	"license": "MIT",
-	"version": "1.3.0",
+	"version": "1.4.0",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run package",
