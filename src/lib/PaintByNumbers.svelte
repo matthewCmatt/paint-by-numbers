@@ -15,13 +15,15 @@
 	let canvasRect: DOMRect;
 
 	onMount(() => {
+		console.debug('Paint By Numbers mounted');
+
+		canvas_dst.width = baseImage.width;
+		canvas_dst.height = baseImage.height;
+
 		canvas_src = document.createElement('canvas');
 		canvas_src.width = baseImage.width;
 		canvas_src.height = baseImage.height;
 		canvas_src.getContext('2d')?.drawImage(baseImage, 0, 0, baseImage.width, baseImage.height);
-
-		canvas_dst.width = baseImage.width;
-		canvas_dst.height = baseImage.height;
 	});
 
 	function handleMouseDown(event: MouseEvent) {
@@ -108,10 +110,11 @@
 
 <div class="root">
 	<!-- svelte-ignore a11y-missing-attribute -->
-	<img bind:this={baseImage} width="600" class="preview" src={imageURL} />
+	<img src={imageURL} class="preview" width="600" bind:this={baseImage} />
 	<canvas
-		bind:this={canvas_dst}
 		class="preview"
+		width="600"
+		bind:this={canvas_dst}
 		on:mousedown={handleMouseDown}
 		on:mousemove={handleMouseMove}
 		on:mouseup={handleMouseUp}
