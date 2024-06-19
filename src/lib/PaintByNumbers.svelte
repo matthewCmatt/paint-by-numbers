@@ -110,7 +110,7 @@
 
 <div class="root">
 	<!-- svelte-ignore a11y-missing-attribute -->
-	<img src={imageURL} class="preview" width="600" bind:this={baseImage} />
+	<img src={imageURL} class="preview" width="600" loading="eager" bind:this={baseImage} />
 	<canvas
 		class="preview"
 		width="600"
