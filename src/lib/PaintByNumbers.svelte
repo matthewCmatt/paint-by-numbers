@@ -106,7 +106,7 @@
 	}
 </script>
 
-<div>
+<div class="root">
 	<!-- svelte-ignore a11y-missing-attribute -->
 	<img bind:this={baseImage} width="600" class="preview" src={imageURL} />
 	<canvas
@@ -116,14 +116,17 @@
 		on:mousemove={handleMouseMove}
 		on:mouseup={handleMouseUp}
 	/>
-</div>
-<div>
-	<button on:click={clearCanvas}>Clear</button>
-	<button on:click={() => autostroke(100)}>Autostroke (x100)</button>
-	<button on:click={() => autostroke(1000)}>Autostroke (x1000)</button>
+	<div>
+		<button on:click={clearCanvas}>Clear</button>
+		<button on:click={() => autostroke(100)}>Autostroke (x100)</button>
+		<button on:click={() => autostroke(1000)}>Autostroke (x1000)</button>
+	</div>
 </div>
 
 <style>
+	.root {
+		text-align: center;
+	}
 	.preview {
 		border: 1px solid #000;
 		border-radius: 5px;
