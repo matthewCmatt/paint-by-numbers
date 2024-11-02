@@ -2,10 +2,14 @@
 	import { onMount } from 'svelte';
 	import { gaussianRandom } from './gaussianRandom.js';
 
-	export let imageURL: string;
-	export let strokeRadius: number = 5;
-	export let strokeLength: number = 10;
-	export let strokeAngle: number = 2.7; // Radius
+	interface Props {
+		imageURL: string;
+		strokeRadius?: number;
+		strokeLength?: number;
+		strokeAngle?: number;
+	}
+
+	let { imageURL, strokeRadius = 5, strokeLength = 10, strokeAngle = 2.7 }: Props = $props();
 
 	let baseImage: HTMLImageElement;
 	let canvas_dst: HTMLCanvasElement; // Destination (painting) canvas
@@ -117,20 +121,20 @@
 </script>
 
 <div class="root">
-	<!-- svelte-ignore a11y-missing-attribute -->
+	<!-- svelte-ignore a11y_missing_attribute -->
 	<img src={imageURL} class="preview" width="600" bind:this={baseImage} />
 	<canvas
 		class="preview"
 		width="600"
 		bind:this={canvas_dst}
-		on:mousedown={handleMouseDown}
-		on:mousemove={handleMouseMove}
-		on:mouseup={handleMouseUp}
-	/>
+		onmousedown={handleMouseDown}
+		onmousemove={handleMouseMove}
+		onmouseup={handleMouseUp}
+	></canvas>
 	<div>
-		<button on:click={clearCanvas}>Clear</button>
-		<button on:click={() => autostroke(100)}>Autostroke (x100)</button>
-		<button on:click={() => autostroke(1000)}>Autostroke (x1000)</button>
+		<button onclick={clearCanvas}>Clear</button>
+		<button onclick={() => autostroke(100)}>Autostroke (x100)</button>
+		<button onclick={() => autostroke(1000)}>Autostroke (x1000)</button>
 	</div>
 </div>
 
